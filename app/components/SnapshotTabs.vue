@@ -28,6 +28,32 @@ async function copySnapshot(snapshot: string) {
   copiedSnapshot.value = snapshot
   setTimeout(() => { copiedSnapshot.value = null }, 1500)
 }
+
+// ── Utreexo snapshot QR code ──────────────────────────────────────────────────
+
+const qr = ref<{ name: string; dataUrl: string } | null>(null)
+
+async function showQr(name: string, snapshot: string) {
+  const QRCode = await import('qrcode')
+  // The string is uppercase bech32, so it fits the compact alphanumeric QR mode.
+  const dataUrl = await QRCode.toDataURL(snapshot, {
+    errorCorrectionLevel: 'L',
+    margin: 2,
+    scale: 6,
+  })
+  qr.value = { name, dataUrl }
+}
+
+function closeQr() {
+  qr.value = null
+}
+
+function onKeydown(e: KeyboardEvent) {
+  if (e.key === 'Escape') closeQr()
+}
+
+onMounted(() => window.addEventListener('keydown', onKeydown))
+onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 </script>
 
 <template>
@@ -219,13 +245,29 @@ async function copySnapshot(snapshot: string) {
             <td>{{ row.leaves }}</td>
             <td>{{ row.roots }}</td>
             <td>
-              <button class="dl-btn" type="button" @click="copySnapshot(row.snapshot)">
-                {{ copiedSnapshot === row.snapshot ? 'Copied!' : 'Copy' }}
-              </button>
+              <div style="display:flex;flex-direction:column;gap:4px">
+                <button class="dl-btn dl-btn-wide" type="button" @click="copySnapshot(row.snapshot)">
+                  {{ copiedSnapshot === row.snapshot ? 'Copied!' : 'Copy' }}
+                </button>
+                <button class="dl-btn dl-btn-direct dl-btn-wide" type="button" @click="showQr(row.name, row.snapshot)">
+                  Show QR code
+                </button>
+              </div>
             </td>
           </tr>
         </template>
       </tbody>
     </table>
   </div>
+
+  <!-- Utreexo QR code modal -->
+  <Teleport to="body">
+    <div v-if="qr" class="qr-overlay" @click.self="closeQr">
+      <div class="qr-modal" role="dialog" aria-modal="true" :aria-label="`QR code for ${qr.name}`">
+        <button class="qr-close" type="button" aria-label="Close" @click="closeQr">×</button>
+        <div class="qr-title">{{ qr.name }}</div>
+        <img class="qr-img" :src="qr.dataUrl" :alt="`QR code for ${qr.name}`">
+      </div>
+    </div>
+  </Teleport>
 </template>
