@@ -22,9 +22,21 @@ const activeTab = ref<'assumeutxo' | 'snapshots'>('assumeutxo')
 </script>
 
 <template>
+  <DonateSection />
   <SiteHeader />
 
   <main class="site-main">
+    <section class="supporters">
+      <h3>Supporters</h3>
+      <p>
+        Shout out to
+        <a href="https://x.com/rusty_twit" target="_blank" rel="noopener noreferrer">Rusty Russell</a>
+        and
+        <a href="https://x.com/evankaloudis" target="_blank" rel="noopener noreferrer">Evan Kaloudis</a>
+        for donating and keeping this project running in previous years.
+      </p>
+    </section>
+
     <div class="sec-head">
       <h2>Browse Archives</h2>
       <div class="rule"></div>
@@ -32,10 +44,10 @@ const activeTab = ref<'assumeutxo' | 'snapshots'>('assumeutxo')
 
     <SnapshotTabs :active-tab="activeTab" @switch-tab="activeTab = $event" />
     <InfoCards :active-tab="activeTab" />
-    <DonateSection />
   </main>
 
   <footer class="site-footer">
-    <span class="copyleft">&copy;</span> Bitcoin Snapshots by <strong>jaonoctus</strong>
+    made by <a href="https://jaonoctus.dev" target="_blank" rel="noopener noreferrer">jaonoctus</a> with <span class="love">love</span>
+    | <a href="https://github.com/jaonoctus/bitcoin-snapshots" target="_blank" rel="noopener noreferrer">github</a>
   </footer>
 </template>

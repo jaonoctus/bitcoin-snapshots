@@ -1,10 +1,20 @@
+<script setup lang="ts">
+const dismissed = ref(false)
+</script>
+
 <template>
-  <div class="donate-section">
-    <h3>Support This Project</h3>
-    <p>Donations help cover server costs and keep the snapshots available.</p>
+  <aside v-if="!dismissed" class="donate-float" aria-label="Support this project">
+    <p class="donate-copy">
+      <span class="donate-warn" aria-hidden="true">⚠</span>
+      <span>
+        <strong>I personally pay $12/month to keep these snapshots free.</strong>
+        <span class="donate-detail">Even $1 counts toward keeping them available.</span>
+      </span>
+    </p>
     <a class="ln-addr" href="lightning:snapshots@ln.jaonoctus.dev">
       <span class="ln-icon">⚡</span>
       snapshots@ln.jaonoctus.dev
     </a>
-  </div>
+    <button class="donate-close" type="button" aria-label="Dismiss" @click="dismissed = true">×</button>
+  </aside>
 </template>
