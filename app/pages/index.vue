@@ -18,7 +18,7 @@ useHead({
   ],
 })
 
-const activeTab = ref<'assumeutxo' | 'snapshots'>('assumeutxo')
+const activeTab = ref<'assumeutxo' | 'snapshots' | 'utreexo'>('assumeutxo')
 </script>
 
 <template>

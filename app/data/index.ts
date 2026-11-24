@@ -28,6 +28,19 @@ export interface FastSyncEntry {
   url: string
 }
 
+export interface UtreexoEntry {
+  name: string
+  note: string
+  height: number
+  heightDisplay: string
+  blockUrl: string
+  bestBlock: [string, string]
+  blockDate: string
+  leaves: string
+  roots: number
+  snapshot: string
+}
+
 export interface NetworkGroup<T> {
   network: Network
   entries: T[]
@@ -228,6 +241,24 @@ export const fastSyncGroups: NetworkGroup<FastSyncEntry>[] = [
         txouts: '75.63M', supply: '13.28M',
         magnet: 'magnet:?xt=urn:btih:bc24901a2d33033dd0ec84a0f8edc41868c4a137&dn=utxo-snapshot-bitcoin-signet-321295&xl=17029373597&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.bitcoin.sprovoost.nl%3A6969',
         url: 'https://files-vps02.jaonoctus.dev/utxo-snapshot-bitcoin-signet-321295/',
+      },
+    ],
+  },
+]
+
+export const utreexoGroups: NetworkGroup<UtreexoEntry>[] = [
+  {
+    network: 'mainnet',
+    entries: [
+      {
+        name: 'utreexo-mainnet-976590',
+        note: 'rolled forward to the assume-utreexo value hardcoded in Floresta (height 976,679)',
+        height: 976590, heightDisplay: '976,590',
+        blockUrl: 'https://mempool.space/block/00000000000000000001b489afd16813e249cc7a6621baed912153d155fca79d',
+        bestBlock: ['9121 53D1', '55FC A79D'],
+        blockDate: '2026-11-19',
+        leaves: '3,243,101,646', roots: 17,
+        snapshot: 'UTREEXO1QYQVAESWQR8V6NWPQQQQQQQQQQQQQQQQQQQQQQD53XHAZ6QNUFYUC7NXYXAWMYFP20G4TL98N5GUK2635ZYLV50839AZEEAWW6877Y750MLN8L6U6KKYGKCH7QMEDAQEGFLL5W77LKPNV6WKJ9897ETDKTJLQYCXVY6QCK44LUYRRZ705THRSESHXHSP5MXVK5QM9FDWYD2EPGDVFZLWAQCC0U6AR8TNMY5ESGY8AFUZXUMUN372TAFA5RVMY4PTDH8XZVC4QKZZREZLREHX8ZVMMPH30KPV6V730NDFTJ8PXNJQ5X6Z00ZQYHAN3KK7KRY62KVMKFJQC5SZ4TYRR09CHF0CWV84J3QQHN9VCGEF44JSVFX6JHNGWT7GX6F96P30V7ZE0UPLDXCAFCLEWHKL9C5FHS47G3KVQUPVAEPX980Z8CA3JQFHZW6V0SPEXJVF56A0TTVTQKDJWTLLDQFW55PQT4U5M60RAE3M5EQ3K049RLNNQVV0RG76NLQY3Y2RQ5NRLXE7CVK7H3XF32LL4T0P55JDTGCW3K472VTY29KU9VC8A8MV3G2Y7RPGNGU88PMHGUFHX93T5WMKNS9WT4JU60ZJYZHP24FL0RK72YV8Z9VJJTDNKP6N7SRZSMW88S0TA7YEAA0GLPR08X6ZV7VC5FQ25E2ZSX9CA68YHJA0Z2SSTGVYGS9F0RW8YA4TKJ2AQPS8HRZEJ8870J7U3HTTS5NFP4VA0RRPKL6GVJ7GVR4G3VHVZ9C057FDPP6URUTX97ZEM0G3DTGH66Z6S0YPX42JTQF3MZJ8WXS55GJK8T42QP0J2T3LDD7D9ZQ207CTDE58AULLHR4Z0UXJZ3JX2C408YPF8KYSZEN5Y4TFGC2JX9S07FHA2Z9FDPE0SWWZ0AM9UZJRJFJY9Q2XHNVUQLZ7X0S8ZZZQ0MHKE0NCGCHCLQGX',
       },
     ],
   },

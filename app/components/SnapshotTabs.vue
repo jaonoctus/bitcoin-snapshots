@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { assumeUtxoGroups, fastSyncGroups } from '~/data/index'
+import { assumeUtxoGroups, fastSyncGroups, utreexoGroups } from '~/data/index'
 
 const props = defineProps<{
-  activeTab: 'assumeutxo' | 'snapshots'
+  activeTab: 'assumeutxo' | 'snapshots' | 'utreexo'
 }>()
 
 const emit = defineEmits<{
-  switchTab: [tab: 'assumeutxo' | 'snapshots']
+  switchTab: [tab: 'assumeutxo' | 'snapshots' | 'utreexo']
 }>()
 
 // ── Copy magnet ───────────────────────────────────────────────────────────────
@@ -17,6 +17,16 @@ async function copyMagnet(magnet: string) {
   await navigator.clipboard.writeText(magnet)
   copiedMagnet.value = magnet
   setTimeout(() => { copiedMagnet.value = null }, 1500)
+}
+
+// ── Copy utreexo snapshot ─────────────────────────────────────────────────────
+
+const copiedSnapshot = ref<string | null>(null)
+
+async function copySnapshot(snapshot: string) {
+  await navigator.clipboard.writeText(snapshot)
+  copiedSnapshot.value = snapshot
+  setTimeout(() => { copiedSnapshot.value = null }, 1500)
 }
 </script>
 
@@ -42,6 +52,16 @@ async function copyMagnet(magnet: string) {
       @click="emit('switchTab', 'snapshots')"
     >
       FastSync
+    </button>
+    <button
+      class="tab-btn"
+      :class="{ active: activeTab === 'utreexo' }"
+      role="tab"
+      :aria-selected="activeTab === 'utreexo'"
+      aria-controls="tab-utreexo"
+      @click="emit('switchTab', 'utreexo')"
+    >
+      Utreexo
     </button>
   </div>
 
@@ -154,6 +174,54 @@ async function copyMagnet(magnet: string) {
                   Direct
                 </a>
               </div>
+            </td>
+          </tr>
+        </template>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Utreexo (Floresta / Mandacaru) panel -->
+  <div v-if="activeTab === 'utreexo'" id="tab-utreexo" class="tab-panel" role="tabpanel">
+    <div class="warning-panel">
+      <strong>Warning:</strong> a utreexo snapshot is a short string holding the accumulator roots at a given block.
+      Nothing in the string proves the roots are correct, so importing it means trusting the provider
+      until your node validates the chain by itself.
+    </div>
+
+    <table class="snap-table" cellpadding="0" cellspacing="0">
+      <thead>
+        <tr>
+          <th>Snapshot</th>
+          <th>Height</th>
+          <th>Best Block</th>
+          <th>Block Date</th>
+          <th>Leaves</th>
+          <th>Roots</th>
+          <th>Copy</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template v-for="group in utreexoGroups" :key="group.network">
+          <tr class="net-row">
+            <td colspan="7"><span :class="['nbadge', group.network]">{{ group.network.toUpperCase() }}</span></td>
+          </tr>
+          <tr v-for="row in group.entries" :key="row.name">
+            <td>
+              <div class="fname">{{ row.name }}</div>
+              <div class="fsince fsince-wrap">{{ row.note }}</div>
+            </td>
+            <td class="height">
+              <a :href="row.blockUrl" target="_blank">{{ row.heightDisplay }}</a>
+            </td>
+            <td class="hash">{{ row.bestBlock[0] }}<br>{{ row.bestBlock[1] }}</td>
+            <td>{{ row.blockDate }}</td>
+            <td>{{ row.leaves }}</td>
+            <td>{{ row.roots }}</td>
+            <td>
+              <button class="dl-btn" type="button" @click="copySnapshot(row.snapshot)">
+                {{ copiedSnapshot === row.snapshot ? 'Copied!' : 'Copy' }}
+              </button>
             </td>
           </tr>
         </template>

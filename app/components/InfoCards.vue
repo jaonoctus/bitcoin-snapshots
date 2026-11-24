@@ -1,6 +1,6 @@
 <script setup lang="ts">
 defineProps<{
-  activeTab: 'assumeutxo' | 'snapshots'
+  activeTab: 'assumeutxo' | 'snapshots' | 'utreexo'
 }>()
 </script>
 
@@ -59,6 +59,25 @@ Primary key fingerprint: 7B69 6A61 6F73 1337 520B  8A19 D8F3 1505 B581 D617
       <p><b>Verify integrity (SHA-512 checksum):</b></p>
       <div class="cmd"><span class="prompt">$ </span>sha512sum --check --ignore-missing ./*.sha512sum.txt</div>
       <div class="cmd-out">&lt;filename&gt;: OK</div>
+    </div>
+
+    <!-- Utreexo-only card -->
+    <div v-if="activeTab === 'utreexo'" class="info-card full-width">
+      <h3>About Utreexo Snapshots</h3>
+      <p>
+        <a href="https://github.com/getfloresta/Floresta" target="_blank" rel="noopener noreferrer">Floresta</a>
+        and Mandacaru are utreexo nodes: they keep a compact accumulator of the UTXO set instead of the full set.
+        A snapshot is that accumulator at one block (height, block hash, leaf count and roots), encoded as a
+        single <b>UTREEXO1...</b> string of about 1 kB, so there is no file to download.
+      </p>
+      <p style="margin-top:14px">
+        <b>How it was checked:</b> a Floresta node was started from this string and validated the following
+        blocks with their utreexo proofs. At height 976,679 it reached exactly the accumulator hardcoded in
+        Floresta&rsquo;s source code (same block hash, leaf count and roots).
+      </p>
+      <p style="margin-top:14px">
+        The snapshot is only useful close to the chain tip, so check the block date before importing it.
+      </p>
     </div>
 
     <!-- Assume UTXO-only card -->

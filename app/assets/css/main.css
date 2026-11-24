@@ -324,6 +324,12 @@ body {
   margin-top: 3px;
 }
 
+.fsince-wrap {
+  max-width: 260px;
+  white-space: normal;
+  line-height: 1.5;
+}
+
 .fsince a {
   color: var(--orange);
   text-decoration: none;
@@ -389,6 +395,11 @@ body {
   transition: all 0.15s;
   white-space: nowrap;
   width: 90px;
+}
+
+button.dl-btn {
+  background: none;
+  cursor: pointer;
 }
 
 .dl-btn:hover {
